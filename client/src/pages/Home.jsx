@@ -1,12 +1,11 @@
-import Signup from '../components/Signup'
+import NavScroll from '../components/NavScroll';
+
 
 const Home=()=>{
-    return(
-        <>
-        <h1>Home Page</h1>
-        <Signup/>
-        
-        </>
-    )
+    return(<>  
+        <NavScroll/>      
+        <h1>Wlecome to hom Page</h1>
+    </>
+)
 }
 export default Home;

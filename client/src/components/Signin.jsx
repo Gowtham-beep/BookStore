@@ -1,42 +1,49 @@
 import Button from 'react-bootstrap/Button';
 import Card from 'react-bootstrap/Card';
 import Form from 'react-bootstrap/Form';
-import { useState } from 'react';
+import { useState,useEffect} from 'react';
 import { useFirebase } from '../context/firebase';
 import {useNavigate} from 'react-router-dom'
 
-function Signup() {
+function Signin() {
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
   const firebase = useFirebase();
-  const navigator=useNavigate()
+  const navigate=useNavigate()
+  
+  useEffect(()=>{
+    if(firebase.isLoggedIn){
+    navigate('/')
+    }
+  },[firebase,navigate])
 
-  const handleCreateAccount = async (e) => {
+  const handleSigninWithEmailAndPassword = async (e) => {
     e.preventDefault();
-    await firebase.signupWithEmailAndPassword(email, password);
+    await firebase.signinWithEmailAndPassword(email, password);
   };
+const handleGoogleSignin=async()=>{
+await firebase.signinWithGoogle()
+}
 
-  const renderSigninpage=()=>{
-    navigator('/signinpage')
-  }
+
   return (
     <div className="d-flex justify-content-center align-items-center" >
       <Card style={{ width: '24rem' }} className="shadow-sm p-3 mb-5 bg-white rounded">
         <Card.Body>
-          <Card.Title className="text-center mb-4">Create Account</Card.Title>
-          <Form onSubmit={handleCreateAccount}>
-            <Form.Group className="mb-3" controlId="SignupEmail">
+          <Card.Title className="text-center mb-4">Sign In</Card.Title>
+          <Form onSubmit={handleSigninWithEmailAndPassword}>
+            <Form.Group className="mb-3" controlId="SigninEmail">
               <Form.Label>Email address</Form.Label>
               <Form.Control 
                 onChange={(e) => setEmail(e.target.value)} 
                 type="email" 
                 placeholder="Enter email" 
-                value={email} 
-                required
+                value={email}
+                required 
               />
               </Form.Group>
 
-            <Form.Group className="mb-4" controlId="SignupPassword">
+            <Form.Group className="mb-4" controlId="SigninPassword">
               <Form.Label>Password</Form.Label>
               <Form.Control 
                 onChange={(e) => setPassword(e.target.value)} 
@@ -45,17 +52,14 @@ function Signup() {
                 value={password} 
                 required
               />
-              <Form.Text className="text-muted">
-              We'll never share your email with anyone else.
-            </Form.Text>
             </Form.Group>
             <div style={{
                 display:'flex',
                 flexDirection:"column",
                 gap:"8px"
             }}>
-            <Button variant="primary" type="submit" className="w-100">Signup</Button>
-            <Button variant="primary" className="w-100" onClick={renderSigninpage}>Signin</Button>
+            <Button variant="primary" type="submit" className="w-100">Sign In</Button>
+            <Button variant="danger" className="w-100" onClick={handleGoogleSignin}>Signin with Google</Button>
             </div>
           </Form>
         </Card.Body>
@@ -64,4 +68,4 @@ function Signup() {
   );
 }
 
-export default Signup;
+export default Signin;

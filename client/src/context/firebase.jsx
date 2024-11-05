@@ -1,6 +1,17 @@
-import React, { createContext, useContext } from 'react';
+import React, { 
+    createContext,
+   useContext,
+   useEffect,
+   useState} from 'react';
 import { initializeApp } from 'firebase/app';
-import {getAuth,createUserWithEmailAndPassword,signInWithEmailAndPassword} from 'firebase/auth'
+import {getAuth,
+  createUserWithEmailAndPassword,
+  signInWithEmailAndPassword,
+  signInWithPopup,
+  GoogleAuthProvider,
+  onAuthStateChanged,
+  signOut
+} from 'firebase/auth'
 
 const firebaseConfig = {
   apiKey: import.meta.env.VITE_API_KEY,
@@ -15,13 +26,23 @@ const firebaseConfig = {
 const firebaseApp = initializeApp(firebaseConfig);
 const firebaseAuth=getAuth(firebaseApp)
 const FirebaseContext = createContext(null);
+const provider=new GoogleAuthProvider()
+
 
 export const useFirebase = () => useContext(FirebaseContext);
 
 export const FirebaseProvider = ({ children }) => {
-
+  const [user,setUser]=useState(null)
   const signupWithEmailAndPassword=(email,password)=>{
     return (createUserWithEmailAndPassword(firebaseAuth,email,password))
+    .then((userCredential)=>{
+      if(userCredential){
+        alert("Signup scucess..!")
+      }else{
+        alert("Signup failed ")
+      }
+    })
+    .catch((error)=>alert(error))
   }
 
   const signinWithEmailAndPassword=(email,password)=>{
@@ -29,10 +50,32 @@ export const FirebaseProvider = ({ children }) => {
             .then((val)=>alert("success"))
             .catch((error)=>console.log("Signin Error: ",error)))
   }
+  const signinWithGoogle=()=>{
+    signInWithPopup(firebaseAuth,provider)
+  }
+const handleSignOut=()=>{
+  signOut(firebaseAuth)
+  console.log("Signed Out")
+}
+
+  useEffect(()=>{
+    onAuthStateChanged(firebaseAuth,user=>{
+      if(user){
+        setUser(user)
+      }else{
+        setUser(null)
+      }
+    })
+  },[])
+  const isLoggedIn=user? true:false
+  
   return (
     <FirebaseContext.Provider value={{
       signupWithEmailAndPassword,
-      signinWithEmailAndPassword
+      signinWithEmailAndPassword,
+      signinWithGoogle,
+      isLoggedIn,
+      handleSignOut
       }}>
       {children}
     </FirebaseContext.Provider>
