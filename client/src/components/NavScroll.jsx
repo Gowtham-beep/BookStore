@@ -21,7 +21,7 @@ function NavScroll() {
   return (
     <Navbar expand="lg" className="bg-body-tertiary">
       <Container fluid>
-        <Navbar.Brand href="#">BookStore</Navbar.Brand>
+        <Navbar.Brand href="/" style={{color:'#075df2',fontSize:"32px"}}>BookStore</Navbar.Brand>
         <Navbar.Toggle aria-controls="navbarScroll" />
         <Navbar.Collapse id="navbarScroll">
           <Nav
@@ -31,6 +31,7 @@ function NavScroll() {
           >
             <Nav.Link href="#action1">Home</Nav.Link>
             <Nav.Link href="#action2">Orders</Nav.Link>
+            <Nav.Link href="/addbooks">Add books</Nav.Link>
             {/* <NavDropdown title="Link" id="navbarScrollingDropdown">
               <NavDropdown.Item href="#action3">Action</NavDropdown.Item>
               <NavDropdown.Item href="#action4">

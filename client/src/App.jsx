@@ -5,16 +5,20 @@ import Profile from './pages/Profile'
 import Register from './pages/Register';
 import SigninPage from './pages/Signin';
 import { Routes, Route } from 'react-router-dom';
+import NavScroll from './components/NavScroll';
+import Addbooks from './components/Addbooks';
+
 
 function App() {
   return (
     <>
+      <NavScroll/> 
       <Routes>
         <Route path='/register' element={<Register/>}/>
         <Route path='/signinpage' element={<SigninPage/>}/>
         <Route path='/' element={<Home/>}/>
         <Route path='/orders' element={<Orders/>} />
-        <Route path='/profile' element={<Profile/>} />
+        <Route path='/addbooks' element={<Addbooks/>} />
       </Routes>
     </>
   );
