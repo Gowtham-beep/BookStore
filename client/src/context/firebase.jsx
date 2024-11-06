@@ -78,8 +78,7 @@ const handleSignOut=()=>{
       alert("User must be logged in to add a book.");
       return;
     }
-
-    try {
+      try {
         return await addDoc(collection(db, 'books'), {
         title,
         genre,
