@@ -10,8 +10,10 @@ import {getAuth,
   signInWithPopup,
   GoogleAuthProvider,
   onAuthStateChanged,
-  signOut
+  signOut,
 } from 'firebase/auth'
+import {getFirestore,collection,addDoc} from 'firebase/firestore'
+
 
 const firebaseConfig = {
   apiKey: import.meta.env.VITE_API_KEY,
@@ -23,10 +25,12 @@ const firebaseConfig = {
   appId: import.meta.env.VITE_APP_ID,
 };
 
+const imgur_client_id=import.meta.env.VITE_IMGUR_CLIENT_ID
 const firebaseApp = initializeApp(firebaseConfig);
 const firebaseAuth=getAuth(firebaseApp)
 const FirebaseContext = createContext(null);
 const provider=new GoogleAuthProvider()
+const db=getFirestore(firebaseApp)
 
 
 export const useFirebase = () => useContext(FirebaseContext);
@@ -68,6 +72,32 @@ const handleSignOut=()=>{
     })
   },[])
   const isLoggedIn=user? true:false
+
+  const storeDataOfBooks = async (title, genre, isbn, price, stock, description, coverimg) => {
+    if (!user) {
+      alert("User must be logged in to add a book.");
+      return;
+    }
+
+    try {
+        return await addDoc(collection(db, 'books'), {
+        title,
+        genre,
+        isbn,
+        price,
+        stock,
+        description,
+        coverimg,
+        userId: user.uid,
+        userEmail: user.email,
+        userName: user.displayName,
+        photoUrl: user.photoURL,
+      });
+    } catch (error) {
+      console.error("Error uploading image or storing book data:", error);
+      alert("Failed to add book. Please try again.");
+    }
+  };
   
   return (
     <FirebaseContext.Provider value={{
@@ -75,7 +105,8 @@ const handleSignOut=()=>{
       signinWithEmailAndPassword,
       signinWithGoogle,
       isLoggedIn,
-      handleSignOut
+      handleSignOut,
+      storeDataOfBooks
       }}>
       {children}
     </FirebaseContext.Provider>
