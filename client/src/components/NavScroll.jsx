@@ -21,7 +21,7 @@ function NavScroll() {
   return (
     <Navbar expand="lg" className="bg-body-tertiary">
       <Container fluid>
-        <Navbar.Brand href="/" style={{color:'#075df2',fontSize:"32px"}}>BookStore</Navbar.Brand>
+        <Navbar.Brand href="/" style={{color:'#075df2',fontSize:"32px"}}>BuyBook</Navbar.Brand>
         <Navbar.Toggle aria-controls="navbarScroll" />
         <Navbar.Collapse id="navbarScroll">
           <Nav
@@ -30,7 +30,6 @@ function NavScroll() {
             navbarScroll
           >
             <Nav.Link href="/">Home</Nav.Link>
-            <Nav.Link href=".orders">Orders</Nav.Link>
             <Nav.Link href="/addbooks">Add books</Nav.Link>
             {/* <NavDropdown title="Link" id="navbarScrollingDropdown">
               <NavDropdown.Item href="#action3">Action</NavDropdown.Item>
@@ -46,17 +45,7 @@ function NavScroll() {
               Link
             </Nav.Link> */}
           </Nav>
-          <Form className="d-flex">
-            <Form.Control
-              type="search"
-              placeholder="Search"
-              className="me-2"
-              aria-label="Search"
-            />
-            <div>
-            <Button style={{margin:'5px'}} variant="primary">Search</Button>
-            </div>
-          </Form>
+          
           <div style={{margin:'5px'}}>
           <Button variant="primary" onClick={handleSigninAndSignoutToggle}>{(firebase.isLoggedIn)?'Signout':'Signin'}</Button>
           </div>

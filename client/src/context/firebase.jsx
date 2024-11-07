@@ -110,7 +110,8 @@ const handleSignOut=()=>{
       isLoggedIn,
       handleSignOut,
       storeDataOfBooks,
-      getDocList
+      getDocList,
+      user
       }}>
       {children}
     </FirebaseContext.Provider>
