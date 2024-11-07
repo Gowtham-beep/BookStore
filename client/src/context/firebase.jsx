@@ -12,7 +12,7 @@ import {getAuth,
   onAuthStateChanged,
   signOut,
 } from 'firebase/auth'
-import {getFirestore,collection,addDoc} from 'firebase/firestore'
+import {getFirestore,collection,addDoc,getDocs} from 'firebase/firestore'
 
 
 const firebaseConfig = {
@@ -97,6 +97,10 @@ const handleSignOut=()=>{
       alert("Failed to add book. Please try again.");
     }
   };
+
+  const getDocList=async()=>{
+    return await getDocs(collection(db,'books'))
+  }
   
   return (
     <FirebaseContext.Provider value={{
@@ -105,7 +109,8 @@ const handleSignOut=()=>{
       signinWithGoogle,
       isLoggedIn,
       handleSignOut,
-      storeDataOfBooks
+      storeDataOfBooks,
+      getDocList
       }}>
       {children}
     </FirebaseContext.Provider>
